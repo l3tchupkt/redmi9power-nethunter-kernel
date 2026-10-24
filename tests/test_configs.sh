@@ -10,6 +10,8 @@ CONFIGS_DIR="$REPO_ROOT/configs"
 
 echo "=================================================="
 echo " [TEST 4/4] Validating Configuration Fragments"
+echo "  (Note: Static checks verify Kconfig syntax and fragment option presence."
+echo "   They do NOT replace Kconfig dependency resolution, compilation, or runtime tests.)"
 echo "=================================================="
 
 FAILED=0

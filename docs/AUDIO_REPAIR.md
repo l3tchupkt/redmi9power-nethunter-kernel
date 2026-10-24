@@ -18,9 +18,10 @@ When booting a custom NetHunter kernel on LineageOS 20 (`chime/lime`), the syste
 
 ### Root Cause: Why Magisk Overlay Failed
 Initially, an attempt was made to inject rebuilt audio kernel modules systemlessly via a Magisk module (`/system/vendor/lib/modules`). This failed due to an Android init boot sequence timing constraint:
-1. **Early Kernel Module Loading:** On Qualcomm Bengal platforms, the Android init system loads audio modules during `on early-init` (around **T = 2.11 seconds** after boot) directly from raw `/vendor/lib/modules/`.
+1. **Early Kernel Module Loading:** On Qualcomm Bengal platforms, the Android init system loads audio modules during `on early-init` directly from physical `/vendor/lib/modules/` (measured in kernel `dmesg` logs on our LineageOS 20 test device at **T ≈ 2.11 seconds** after boot).
 2. **Peripheral Image Loader (PIL) Lockup:** When the sound machine driver (`audio_machine_bengal.ko`) fails to find the codec drivers at `early-init`, the Hexagon DSP (ADSP) Peripheral Image Loader (PIL) encounters a binding timeout.
-3. **Magisk Late Mount:** Magisk overlays are mounted during `post-fs-data` (typically **T > 8.0 seconds** after boot). By the time Magisk overlayed the modules, the Hexagon DSP subsystem had already timed out and refused to re-bind.
+3. **Magisk Late Mount:** Magisk systemless overlays are mounted during `post-fs-data` (observed in logcat/dmesg at **T > 8.0 seconds** after boot). By the time Magisk overlayed the modules, the Hexagon DSP subsystem had already timed out and refused to re-bind.
+*(Note: These timestamps reflect measured observations from dmesg logs on this specific device and LineageOS 20 build; they illustrate the architectural necessity of recovery-level vendor installation rather than universal timing constants across all Android devices.)*
 4. **Conclusion:** Audio kernel modules on this platform **must reside directly in the physical vendor partition** (`/vendor/lib/modules/`).
 
 ---

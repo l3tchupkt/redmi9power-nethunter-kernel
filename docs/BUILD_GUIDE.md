@@ -162,3 +162,8 @@ bash tests/run_all_tests.sh
 2. **Magisk Packaging (`tests/test_magisk_packaging.sh`):** Verifies rejection of empty module sets, rejection of dangerous staging paths (`/`), fixture module packaging, and payload integrity (`unzip -t`).
 3. **Audio Recovery Packaging (`tests/test_audio_packaging.sh`):** Ensures source directories exist, verifies exclusion of disabled reference WSA881x drivers, verifies strict prevention of raw partition images (`.img`) from being bundled, and checks ZIP generation.
 4. **Configuration Fragments (`tests/test_configs.sh`):** Confirms valid Kconfig syntax across all `.config` fragments and asserts required security/hardware features (`CONFIG_HIDRAW`, `CONFIG_MAC80211`, `CONFIG_USB_SERIAL_*`, `CONFIG_USB_CONFIGFS_F_HID`, `CONFIG_PREEMPT`, `CONFIG_SWITCH`).
+
+### ⚠️ Verification Boundaries & Non-Goals:
+- **Packaging Logic vs. Driver Compatibility:** Synthetic fixture files in `test_magisk_packaging.sh` test *packager error handling, path traversal guards, and archive creation*. They do **not** validate binary ABI compatibility, symbol resolution against `Module.symvers`, or driver loading in the Android kernel.
+- **Static Fragment Linting vs. Runtime Enablers:** `test_configs.sh` confirms option strings are declared in configuration fragments. It does **not** prove that Kconfig dependency chains resolve without conflict during `make olddefconfig`, that the kernel compiles, or that features function at runtime.
+- **Host Testing vs. Device Verification:** Automated host-side test suites do **not** substitute for physical bench testing of boot, audio playback, USB HID keystroke injection, UART communications, or Wi-Fi packet injection on actual hardware.

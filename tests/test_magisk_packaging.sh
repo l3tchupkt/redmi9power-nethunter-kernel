@@ -38,6 +38,8 @@ fi
 
 # Test Case C: Packaging Fixture Modules
 echo "--- Running Subtest C: Packaging test fixture modules ---"
+echo "  (Note: Dummy ELF fixtures test packaging pipeline logic and directory layout only."
+echo "   They do NOT prove driver symbol resolution, ABI compatibility, or on-device loading.)"
 TMP_FIXTURE_DIR="/tmp/test_nethunter_fixture_$$"
 mkdir -p "$TMP_FIXTURE_DIR/work" "$TMP_FIXTURE_DIR/out"
 

@@ -119,9 +119,12 @@ bash tests/run_all_tests.sh
 ```
 
 - **Suite 1 (`tests/test_syntax.sh`):** Syntax validation (`bash -n`) across all shell scripts.
-- **Suite 2 (`tests/test_magisk_packaging.sh`):** Magisk packager failure testing (empty sets, unsafe paths, ZIP integrity).
+- **Suite 2 (`tests/test_magisk_packaging.sh`):** Magisk packager failure testing (empty sets, unsafe paths, ZIP integrity via dummy fixtures).
 - **Suite 3 (`tests/test_audio_packaging.sh`):** Audio recovery packager validation (missing directories, WSA881x exclusion, raw `.img` rejection).
-- **Suite 4 (`tests/test_configs.sh`):** Kernel configuration fragment syntax and required feature validation (`CONFIG_HIDRAW`, `CONFIG_MAC80211`, `CONFIG_USB_SERIAL_*`, `CONFIG_USB_CONFIGFS_F_HID`, `CONFIG_PREEMPT`, `CONFIG_SWITCH`).
+- **Suite 4 (`tests/test_configs.sh`):** Kernel configuration fragment syntax and required feature option presence (`CONFIG_HIDRAW`, `CONFIG_MAC80211`, `CONFIG_USB_SERIAL_*`, `CONFIG_USB_CONFIGFS_F_HID`, `CONFIG_PREEMPT`, `CONFIG_SWITCH`).
+
+> [!NOTE]
+> **Scope of Host-Side Tests:** Host tests validate shell syntax, script error traps, path safety guards, dummy fixture packaging, and static fragment option presence. They do **not** substitute for on-device bench testing of kernel booting, audio playback, driver symbol resolution, or physical USB hardware peripherals.
 
 ---
 
