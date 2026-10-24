@@ -1,0 +1,5 @@
+# Enforce Unix LF line endings for all shell scripts and kernel configurations
+* text=auto
+*.sh text eol=lf
+*.config text eol=lf
+*.md text eol=lf

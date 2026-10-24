@@ -60,9 +60,9 @@ We explicitly distinguish between features verified through hands-on hardware te
    ```
 
 ### Step 2: Install Wireless Modules (Magisk)
-1. Transfer `chime-nethunter-modules-v0.1.0.zip` to the phone's internal storage.
+1. Transfer `chime-nethunter-wireless-v0.1.0.zip` to the phone's internal storage.
 2. Open the **Magisk App** -> **Modules** tab -> **Install from storage**.
-3. Select `chime-nethunter-modules-v0.1.0.zip` and tap **Reboot** once finished.
+3. Select `chime-nethunter-wireless-v0.1.0.zip` and tap **Reboot** once finished.
 
 ### Step 3: Install Audio Subsystem Package (Recovery)
 To guarantee working internal speakers, headset jack, and ALSA registration:
@@ -107,6 +107,21 @@ Detailed architecture and engineering guides are located in the [`docs/`](docs/)
 - 📡 [**RTL-SDR Integration & Software Defined Radio**](docs/SDR_SETUP.md) — USB permissions, NetHunter chroot `rtl_test`, RF Analyzer setup, SDR++ direct USB vs RTL-TCP daemon, and audio sink routing.
 - 🔌 [**Hardware Hacking, Wireless Injection & USB Gadget**](docs/HARDWARE_AND_WIRELESS.md) — RTL8812AU/RTL8188EUS packet injection, BadUSB `/dev/hidg0`, hardware UART `/dev/ttyUSB0`, and wireless ADB debugging.
 - ⚙️ [**Kernel Compilation & Reproducible Build Guide**](docs/BUILD_GUIDE.md) — Toolchain requirements (LLVM 19, Clang, AArch64 GCC), configuration fragments, out-of-tree module compilation, and boot image repacking.
+
+---
+ 
+## 🧪 Automated Host-Side Verification Test Suite
+
+A standalone test suite validates script syntax, packaging logic, error handling, and configuration fragments:
+
+```bash
+bash tests/run_all_tests.sh
+```
+
+- **Suite 1 (`tests/test_syntax.sh`):** Syntax validation (`bash -n`) across all shell scripts.
+- **Suite 2 (`tests/test_magisk_packaging.sh`):** Magisk packager failure testing (empty sets, unsafe paths, ZIP integrity).
+- **Suite 3 (`tests/test_audio_packaging.sh`):** Audio recovery packager validation (missing directories, WSA881x exclusion, raw `.img` rejection).
+- **Suite 4 (`tests/test_configs.sh`):** Kernel configuration fragment syntax and required feature validation (`CONFIG_HIDRAW`, `CONFIG_MAC80211`, `CONFIG_USB_SERIAL_*`, `CONFIG_USB_CONFIGFS_F_HID`, `CONFIG_PREEMPT`, `CONFIG_SWITCH`).
 
 ---
 

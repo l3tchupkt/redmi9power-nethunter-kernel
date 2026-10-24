@@ -134,7 +134,7 @@ To package the out-of-tree wireless drivers into a flashable Magisk module:
 ```bash
 ./build_magisk_module.sh
 ```
-This produces `out/chime-nethunter-modules-v0.1.0.zip` ready for installation via the Magisk App.
+This produces `out/chime-nethunter-wireless-v0.1.0.zip` ready for installation via the Magisk App.
 
 ---
 
@@ -146,3 +146,19 @@ To rebuild the tested recovery installer and rollback packages:
 ./scripts/package_audio_installer.sh
 ```
 Generates `out/chime-audio-test-v2.zip` and `out/chime-audio-rollback-v2.zip` with verified SHA-256 signatures.
+
+---
+
+## 8. Running Automated Verification Test Suites
+
+To verify script syntax, packaging logic, error handling, and configuration integrity without physical hardware:
+
+```bash
+bash tests/run_all_tests.sh
+```
+
+### Test Coverage:
+1. **Shell Syntax (`tests/test_syntax.sh`):** Validates all shell scripts in the repository using `bash -n`.
+2. **Magisk Packaging (`tests/test_magisk_packaging.sh`):** Verifies rejection of empty module sets, rejection of dangerous staging paths (`/`), fixture module packaging, and payload integrity (`unzip -t`).
+3. **Audio Recovery Packaging (`tests/test_audio_packaging.sh`):** Ensures source directories exist, verifies exclusion of disabled reference WSA881x drivers, verifies strict prevention of raw partition images (`.img`) from being bundled, and checks ZIP generation.
+4. **Configuration Fragments (`tests/test_configs.sh`):** Confirms valid Kconfig syntax across all `.config` fragments and asserts required security/hardware features (`CONFIG_HIDRAW`, `CONFIG_MAC80211`, `CONFIG_USB_SERIAL_*`, `CONFIG_USB_CONFIGFS_F_HID`, `CONFIG_PREEMPT`, `CONFIG_SWITCH`).
